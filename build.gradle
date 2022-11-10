@@ -19,7 +19,8 @@ jar {
 //change the name of the class that is run on line 16 to match your own code
 task run;
 run.doFirst {
-    println "To run the program:\njava -jar build/libs/exampleguiproject.jar"
+    //println "To run the program:\njava -jar build/libs/exampleguiproject.jar"
+    println "To run the program:\njava -cp build/classes/java/main/ Runner"
 }
 dependencies {
     testImplementation('junit:junit:4.13')
