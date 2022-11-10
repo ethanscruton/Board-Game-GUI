@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="8.45.1">
+<file name="/course/coursework/a3/src/main/java/boardgame/BoardGame.java">
+</file>
+<file name="/course/coursework/a3/src/main/java/boardgame/Grid.java">
+</file>
+<file name="/course/coursework/a3/src/main/java/boardgame/Runner.java">
+</file>
+<file name="/course/coursework/a3/src/main/java/boardgame/Saveable.java">
+</file>
+<file name="/course/coursework/a3/src/main/java/boardgame/scrabble/ScrabbleGame.java">
+</file>
+<file name="/course/coursework/a3/src/main/java/boardgame/scrabble/ScrabbleGrid.java">
+</file>
+<file name="/course/coursework/a3/src/main/java/boardgame/ui/PositionAwareButton.java">
+</file>
+</checkstyle>
