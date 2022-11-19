@@ -10,6 +10,7 @@ public abstract class BoardGame{
 
     private Grid grid;
     private Iterator<String> iter;
+    private int currentPlayer;
 
     /** 
      * @param wide The desired width of the board
@@ -143,4 +144,40 @@ public abstract class BoardGame{
     public String toString(){
         return grid.toString();
     }
+
+        /**
+     * The current player value (1-2).
+     * @return An integer representing which player's turn it currently is.
+     */
+    public int getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    /**
+     * Updates the value of current player to the given value, clamped to allowed range (1-2).
+     * @param newPlayer The new value for currentPlayer
+     */
+    public void setCurrentPlayer(int newPlayer) {
+        currentPlayer = newPlayer;
+        clampCurrentPlayer();
+    }
+
+    /**
+     * Sets current player to 2 if it's 1 and 1 if it's 2
+     */
+    public void incrementCurrentPlayer() {
+        if(currentPlayer == 1) {
+            currentPlayer++;
+        } else {
+            currentPlayer = 1;
+        }
+    }
+
+    /**
+     * Clamps the current player value within 1 and 2
+     */
+    private void clampCurrentPlayer() {
+        currentPlayer = Math.max(1, Math.min(2,currentPlayer));
+    }
 }
+
