@@ -121,8 +121,6 @@ public  class Grid{
         return toPrint;
     }
 
-
-
     
     /** 
      * wrapper around getStringGrid

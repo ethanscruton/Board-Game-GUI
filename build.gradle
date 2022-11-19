@@ -20,7 +20,7 @@ jar {
 task run;
 run.doFirst {
     //println "To run the program:\njava -jar build/libs/exampleguiproject.jar"
-    println "To run the program:\njava -cp build/classes/java/main/ Runner"
+    println "To run the program:\njava -cp build/classes/java/main/ game.GameUI"
 }
 dependencies {
     testImplementation('junit:junit:4.13')

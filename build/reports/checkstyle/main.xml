@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="8.45.1">
-<file name="/course/coursework/a3/src/main/java/boardgame/BoardGame.java">
+<file name="C:\Users\ethan\School\2022F\CIS 2430\coursework\A3\src\main\java\boardgame\BoardGame.java">
 </file>
-<file name="/course/coursework/a3/src/main/java/boardgame/Grid.java">
+<file name="C:\Users\ethan\School\2022F\CIS 2430\coursework\A3\src\main\java\boardgame\GameStorage.java">
 </file>
-<file name="/course/coursework/a3/src/main/java/boardgame/Runner.java">
+<file name="C:\Users\ethan\School\2022F\CIS 2430\coursework\A3\src\main\java\boardgame\Grid.java">
 </file>
-<file name="/course/coursework/a3/src/main/java/boardgame/Saveable.java">
+<file name="C:\Users\ethan\School\2022F\CIS 2430\coursework\A3\src\main\java\boardgame\Player.java">
 </file>
-<file name="/course/coursework/a3/src/main/java/boardgame/scrabble/ScrabbleGame.java">
+<file name="C:\Users\ethan\School\2022F\CIS 2430\coursework\A3\src\main\java\boardgame\Saveable.java">
 </file>
-<file name="/course/coursework/a3/src/main/java/boardgame/scrabble/ScrabbleGrid.java">
+<file name="C:\Users\ethan\School\2022F\CIS 2430\coursework\A3\src\main\java\boardgame\ui\PositionAwareButton.java">
 </file>
-<file name="/course/coursework/a3/src/main/java/boardgame/ui/PositionAwareButton.java">
+<file name="C:\Users\ethan\School\2022F\CIS 2430\coursework\A3\src\main\java\game\GameUI.java">
+</file>
+<file name="C:\Users\ethan\School\2022F\CIS 2430\coursework\A3\src\main\java\game\HomepageView.java">
+</file>
+<file name="C:\Users\ethan\School\2022F\CIS 2430\coursework\A3\src\main\java\scrabble\ScrabbleGame.java">
+</file>
+<file name="C:\Users\ethan\School\2022F\CIS 2430\coursework\A3\src\main\java\scrabble\ScrabbleGrid.java">
+</file>
+<file name="C:\Users\ethan\School\2022F\CIS 2430\coursework\A3\src\main\java\scrabble\ScrabbleView.java">
 </file>
 </checkstyle>
