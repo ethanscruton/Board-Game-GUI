@@ -1,14 +1,10 @@
-package scrabble;
+package tictactoe;
 
 import java.util.Iterator;
 
+public class TictactoeGrid extends boardgame.Grid{
 
-/**
- * This class represents the grid Number Scrabble is played on
- * Extends boardgame.Grid
- */
-public class ScrabbleGrid extends boardgame.Grid{
-    public ScrabbleGrid(){
+    public TictactoeGrid(){
         super(3,3);
     }
 
@@ -117,8 +113,8 @@ public class ScrabbleGrid extends boardgame.Grid{
     }
 
     private void validateTurnChar(char c){
-        if ((c != 'O') && (c != 'E')){
-            throw new RuntimeException("Line 1 char 1 should be 'O' or 'E'");
+        if ((c != 'X') && (c != 'O')){
+            throw new RuntimeException("Line 1 char 1 should be 'X' or 'O'");
         }
     }
 
@@ -130,55 +126,62 @@ public class ScrabbleGrid extends boardgame.Grid{
 
     private void validateLineWithLength3(String line, int lineNum){
         int commaCount = 0;
-        int digitCount = 0;
+        int playerSymbolCount = 0;
         for (int i=0; i<3; i++){
-            if (Character.isDigit(line.charAt(i))){
-                digitCount++;
+            if (isValidPlayerSymbol(line.charAt(i))){
+                playerSymbolCount++;
             } else if (line.charAt(i) == ','){
                 commaCount++;
             } else{
                 throw new RuntimeException("Invalid character at line " + (lineNum+1) + " char " + (i+1));
             }
         }
-        if (commaCount != 2 || digitCount != 1){
+        if (commaCount != 2 || playerSymbolCount != 1){
             throw new RuntimeException("Invalid line format for line " + (lineNum+1));
         }   
     }
 
     private void validateLineWithLength4(String line, int lineNum){
         int commaCount = 0;
-        int digitCount = 0;
+        int playerSymbolCount = 0;
         for (int i=0; i<4; i++){
-            if (Character.isDigit(line.charAt(i))){
-                digitCount++;
+            if (isValidPlayerSymbol(line.charAt(i))){
+                playerSymbolCount++;
             } else if (line.charAt(i) == ','){
                 commaCount++;
             } else{
                 throw new RuntimeException("Invalid character at line " + (lineNum+1) + " char " + (i+1));
             }
         }
-        if (commaCount != 2 || digitCount != 2){
+        if (commaCount != 2 || playerSymbolCount != 2){
             throw new RuntimeException("Invalid line format for line " + (lineNum+1));
         }   
     }
 
     private void validateLineWithLength5(String line, int lineNum){
-        if (!Character.isDigit(line.charAt(0))){
+        if (!isValidPlayerSymbol(line.charAt(0))){
             throw new RuntimeException("Invalid character at line " + (lineNum+1) + " char " + 1);
         } else if (line.charAt(1) != ','){
             throw new RuntimeException("Invalid character at line " + (lineNum+1) + " char " + 2);
-        } else if (!Character.isDigit(line.charAt(2))){
+        } else if (!isValidPlayerSymbol(line.charAt(2))){
             throw new RuntimeException("Invalid character at line " + (lineNum+1) + " char " + 3);
         } else if (line.charAt(3) != ','){
             throw new RuntimeException("Invalid character at line " + (lineNum+1) + " char " + 4);
-        } else if (!Character.isDigit(line.charAt(4))){
+        } else if (!isValidPlayerSymbol(line.charAt(4))){
             throw new RuntimeException("Invalid character at line " + (lineNum+1) + " char " + 5);
         }
     }
 
+    private boolean isValidPlayerSymbol(char c){
+        if ((c == 'X' || c == 'O')){
+            return true;
+        }
+        return false;
+    }
+
     private void validatePlayerTurns(String[] toParseArray){
-        int oddCount = 0;
-        int evenCount = 0;
+        int xCount = 0;
+        int oCount = 0;
         String currLine;
         char currChar;
         char mostRecentTurn = toParseArray[0].charAt(0);
@@ -187,22 +190,20 @@ public class ScrabbleGrid extends boardgame.Grid{
             currLine = toParseArray[i];
             for (int j=0; j<currLine.length(); j++){
                 currChar = currLine.charAt(j);
-                if (Character.isDigit(currChar)){
-                    if (Character.getNumericValue(currChar) % 2 == 0){
-                        evenCount++;
-                    } else{
-                        oddCount++;
-                    }
+                if (currChar == 'X'){
+                    xCount++;
+                } else if (currChar == 'O'){
+                    oCount++;
                 }
             }
         }
-        if (mostRecentTurn == 'O'){
-            if ((oddCount - 1) != evenCount){
-                throw new RuntimeException("Invalid game. Odd should have 1 more number on board than even");
+        if (mostRecentTurn == 'X'){
+            if ((xCount - 1) != oCount){
+                throw new RuntimeException("Invalid game. X should have 1 more symbol on board than O");
             }
         } else{
-            if (oddCount != evenCount){
-                throw new RuntimeException("Invalid game. Odd should have same amount of numbers as even");
+            if (xCount != oCount){
+                throw new RuntimeException("Invalid game. X should have same amount of symbols as O");
             }
         }
     }

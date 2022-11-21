@@ -1,11 +1,15 @@
 package game;
 
-
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.BoxLayout;
-import java.awt.event.ActionListener;
+import java.awt.Component;
 
+/**
+ * This class represents the homepage of the game suite.
+ *  Allows user to start Scrabble, Tic Tac Toe, or exit application.
+ * Extends JPanel
+ */
 public class HomepageView extends JPanel{
     private JButton startScrabbleButton;
     private JButton startTictactoeButton;
@@ -20,10 +24,11 @@ public class HomepageView extends JPanel{
         createScrabbleButton();
         createTictactoeButton();
         createExitApplicationButton();
-        
+
         add(startScrabbleButton);
         add(startTictactoeButton);
         add(exitApplicationButton);
+        setAlignmentY(Component.CENTER_ALIGNMENT);
     }
 
     private void createScrabbleButton(){
@@ -33,7 +38,7 @@ public class HomepageView extends JPanel{
 
     private void createTictactoeButton(){
         startTictactoeButton = new JButton("Play Tictactoe");
-        startTictactoeButton.addActionListener(e->root.tictactoe(null));
+        startTictactoeButton.addActionListener(e->root.tictactoe());
     }
 
     private void createExitApplicationButton(){

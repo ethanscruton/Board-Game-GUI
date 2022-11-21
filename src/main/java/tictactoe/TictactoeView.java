@@ -1,4 +1,4 @@
-package scrabble;
+package tictactoe;
 /**
  *  an example GUI view for an NxM game
  */
@@ -15,16 +15,15 @@ import game.GameUI;
 import boardgame.ui.BoardGameView;
 
 /**
-* This class provides the UI for playing Number Scrabble
-* Extends BoardGameView
+* 
 */
-public class ScrabbleView extends BoardGameView{
-    private ScrabbleGame myGame;
-    public ScrabbleView(int wide, int tall, GameUI gameFrame){
+public class TictactoeView extends BoardGameView{
+    private TictactoeGame myGame;
+    public TictactoeView(int wide, int tall, GameUI gameFrame){
         // call the superclass constructor
         super(wide, tall, gameFrame);
-        myGame = (ScrabbleGame)getGame();
-        setGameNameLabel("Number Scrabble");
+        myGame = (TictactoeGame)getGame();
+        setGameNameLabel("Tic Tac Toe");
     }
 
     /**
@@ -32,10 +31,10 @@ public class ScrabbleView extends BoardGameView{
      */
     @Override
     protected void instantiateController(){
-        setGameController(new ScrabbleGame());
+        setGameController(new TictactoeGame());
     }
 
-    public void setGameController(ScrabbleGame controller){
+    public void setGameController(TictactoeGame controller){
         setGame(controller);
     }
 
@@ -49,9 +48,9 @@ public class ScrabbleView extends BoardGameView{
         if (myGame.getWinner() == 0){
             return "Tie Game!" + playAgainMsg;
         } else if (myGame.getWinner() == 1){
-            return "Odds win!" + playAgainMsg;
+            return "X's win!" + playAgainMsg;
         } else{
-            return "Evens win!" + playAgainMsg;
+            return "O's win!" + playAgainMsg;
         }
     }
 
@@ -63,8 +62,8 @@ public class ScrabbleView extends BoardGameView{
         if (myGame.isBoardEmpty()){
             JOptionPane.showMessageDialog(null, "Can't save empty board", "Save error", JOptionPane.ERROR_MESSAGE);
         } else{
-            File scrabbleFolder = new File("./assets/scrabble");
-            JFileChooser fc = new JFileChooser(scrabbleFolder);
+            File tictactoeFolder = new File("./assets/tictactoe");
+            JFileChooser fc = new JFileChooser(tictactoeFolder);
             fc.setDialogTitle("Specify a file to save");
             int userSelect = fc.showSaveDialog(this);
             
@@ -86,7 +85,7 @@ public class ScrabbleView extends BoardGameView{
      */
     @Override
     protected void loadGame(){
-        File scrabbleFolder = new File("./assets/scrabble");
+        File scrabbleFolder = new File("./assets/tictactoe");
         JFileChooser fc = new JFileChooser(scrabbleFolder);
         Path scrabbleGamePath;
         
@@ -94,15 +93,15 @@ public class ScrabbleView extends BoardGameView{
             scrabbleGamePath = fc.getSelectedFile().toPath();
             try{
                 GameStorage.load(myGame, scrabbleGamePath);
-                updatePlayerTurnLabel();
                 updateView();
+                updatePlayerTurnLabel();
             } catch (IOException ex){
                 JOptionPane.showMessageDialog(null, ex.getMessage(),
-                                        "Invalid Scrabble File", JOptionPane.ERROR_MESSAGE);
+                                        "Invalid Tictactoe File", JOptionPane.ERROR_MESSAGE);
                 loadGame();
             } catch (RuntimeException rex){
                 JOptionPane.showMessageDialog(null, rex.getMessage(),
-                                        "Invalid Scrabble File", JOptionPane.ERROR_MESSAGE);
+                                        "Invalid Tictactoe File", JOptionPane.ERROR_MESSAGE);
                 loadGame();
             }
         }
@@ -128,20 +127,18 @@ public class ScrabbleView extends BoardGameView{
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Invalid Input", JOptionPane.ERROR_MESSAGE);
             }
         }
-
     }
 
     private String enterNumberMessage(){
         if (myGame.getCurrPlayer() == 1){
-            return "Input an odd number";
+            return "Input X";
         }
-        return "Input an even number";
+        return "Input O";
     }
 
     /**
      * Update player data according to result of game
      */
-    @Override
     protected void incrementPlayerData(){
         if (myGame.getWinner() == 1){
             incrementPlayerWins(1);

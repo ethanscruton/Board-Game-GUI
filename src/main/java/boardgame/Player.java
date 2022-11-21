@@ -1,5 +1,9 @@
 package boardgame;
 
+/**
+ * Class representing a player. Keeps track of wins, losses, and games played.
+ * Implements Saveable interface.
+ */
 public class Player implements Saveable {
     private int wins;
     private int losses;
@@ -41,10 +45,19 @@ public class Player implements Saveable {
         gamesPlayed++;
     }
 
+    /**
+     * Implemented Saveable method. Returns a string representation of instance of Player class
+     *  that can be saved to file.
+     * @returns string representing Player
+     */
     public String getStringToSave(){
         return String.format("%d\n%d\n%d\n", wins, losses, gamesPlayed);
     }
 
+    /**
+     * Implemented Saveable method. Validates and loads data from toLoad into Player instance.
+     * @param toLoad string representing Player
+     */
     public void loadSavedString(String toLoad){
         String[] toLoadArray = toLoad.split("\n", 0);
         validateLoadString(toLoadArray);
@@ -82,8 +95,8 @@ public class Player implements Saveable {
         int lLosses = Integer.parseInt(toLoadArray[1]);
         int lGamesPlayed = Integer.parseInt(toLoadArray[2]);
 
-        if (lGamesPlayed != (lWins + lLosses)){
-            throw new RuntimeException("Games played should equal wins + losses");
+        if (lGamesPlayed < (lWins + lLosses)){
+            throw new RuntimeException("Games played should be greater or equal wins + losses");
         }
     }
 }

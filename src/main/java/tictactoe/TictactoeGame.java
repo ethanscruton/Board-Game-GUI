@@ -1,10 +1,10 @@
-package scrabble;
+package tictactoe;
 
 /**
  * This class represents the board of a 3x3 game of number scrabble.
  * The class provides methods for updating the board and checking if the board contains a winner.
  */
-public class ScrabbleGame extends boardgame.BoardGame implements boardgame.Saveable{
+public class TictactoeGame extends boardgame.BoardGame implements boardgame.Saveable{
     private int currPlayer;
     private int winner;
 
@@ -15,9 +15,9 @@ public class ScrabbleGame extends boardgame.BoardGame implements boardgame.Savea
     /**
      * Constructor for new scrabble game
      */
-    public ScrabbleGame(){
+    public TictactoeGame(){
         super(3,3);
-        setGrid(new ScrabbleGrid());
+        setGrid(new TictactoeGrid());
         currPlayer = 1;
         winner = -1;
     }
@@ -31,11 +31,12 @@ public class ScrabbleGame extends boardgame.BoardGame implements boardgame.Savea
 
     public int getCurrPlayerChar(){
         if (getCurrPlayer() == 1){
-            return 'O';
+            return 'X';
         }
-        return 'E';
+        return 'O';
     }
     
+
     @Override
     public int getWinner(){
         return winner;
@@ -66,18 +67,23 @@ public class ScrabbleGame extends boardgame.BoardGame implements boardgame.Savea
     @Override
     public boolean takeTurn(int across, int down, String input){
         if (isValidStringInput(input)){
-            return takeTurn(across, down, Integer.parseInt(input));
+            setValue(across,down,input);
+            checkForWinner();
+            setCurrPlayer((getCurrPlayer() % 2) + 1);
+            return true;
         }
         return false;
     }
 
     private boolean isValidStringInput(String input){
-        try{
-            Integer.parseInt(input);
-            return true;
-        } catch (NumberFormatException e){
-            throw new RuntimeException("Enter an integer");
+        if (input.length() != 1){
+            throw new RuntimeException("More than one character input");
+        } else if ((getCurrPlayer() == 1) && (!input.equals("X"))){
+            throw new RuntimeException("X not input");
+        } else if ((getCurrPlayer() == 2) && (!input.equals("O"))){
+            throw new RuntimeException("O not input");
         }
+        return true;
     }
 
     /** 
@@ -87,56 +93,11 @@ public class ScrabbleGame extends boardgame.BoardGame implements boardgame.Savea
      * @param across across index, 1 based
      * @param down  down index, 1 based
      * @param input  int input from game
-     * @return boolean  returns true if input was placed false otherwise
+     * @return boolean  returns false always as int should never be input
      */    
     @Override
     public boolean takeTurn(int across, int down, int input){
-        if (isValidIntInput(input)){
-            setValue(across,down,input);
-            checkForWinner();
-            setCurrPlayer((getCurrPlayer() % 2) + 1);
-            return true;
-        }
         return false;
-    }
-
-    private boolean isValidIntInput(int input){
-        
-        if (input < 0 || input > 9){
-            throw new RuntimeException("Input out of range");
-        } else if (boardContains(input)){
-            throw new RuntimeException(input + " is already used");
-        } else if ((input % 2) != (currPlayer % 2)){
-            String currPlayerStr;
-            if (currPlayer == 1){
-                currPlayerStr = "odd";
-            } else{
-                currPlayerStr = "even";
-            }
-            throw new RuntimeException("Select an " + currPlayerStr + " number");
-        }
-        return true;
-    }
-
-    private boolean boardContains(int input){
-        String currCell = getNextValue();
-        boolean retVal = false;
-        
-        resetGridIterator();
-        while (currCell != null){
-            if ((currCell != " ") && (input == Integer.parseInt(currCell))){
-                retVal = true;
-            }
-            currCell = getNextValue();
-        }
-        return retVal;
-    }
-
-    private void resetGridIterator(){
-        String currCell = getNextValue();
-        while (currCell != null){
-            currCell = getNextValue();
-        }
     }
 
     private void checkForWinner(){
@@ -154,48 +115,40 @@ public class ScrabbleGame extends boardgame.BoardGame implements boardgame.Savea
     }
 
     private boolean horizontalWinner(){
-        for (int row = 1; row <=3; row++){
-            if (sumRow(row) == 15){
+        for (int down = 1; down <= 3; down++){
+            if ((getCell(1, down) != " ")
+                && (getCell(1, down).equals(getCell(2, down)))
+                && (getCell(2, down).equals(getCell(3, down)))){
                 return true;
             }
         }
         return false;
-    }
-
-    private int sumRow(int row){
-        return getCellInt(1,row) + getCellInt(2,row) + getCellInt(3,row);
-    }
-
-    private int getCellInt(int across, int down){
-        String cell = getCell(across, down);
-        if (cell == " "){
-            return -100;
-        }
-        return Integer.parseInt(cell);
     }
 
     private boolean verticalWinner(){
-        for (int col = 1; col <=3; col++){
-            if (sumCol(col) == 15){
+        for (int across = 1; across <= 3; across++){
+            if ((!getCell(across, 1).equals(" "))
+                && (getCell(across, 1).equals(getCell(across, 2)))
+                && (getCell(across, 2).equals(getCell(across, 3)))){
                 return true;
             }
         }
         return false;
     }
 
-    private int sumCol(int col){
-        return getCellInt(col,1) + getCellInt(col,2) + getCellInt(col,3);
-    }
-
     private boolean rightDiagonalWinner(){
-        if (getCellInt(1,1) + getCellInt(2,2) + getCellInt(3,3) == 15){
+        if ((getCell(1,1) != " ")
+            && (getCell(1,1).equals(getCell(2,2)))
+            && (getCell(2,2).equals(getCell(3,3)))){
             return true;
         }
         return false;
     }
 
     private boolean leftDiagonalWinner(){
-        if (getCellInt(1,3) + getCellInt(2,2) + getCellInt(3,1) == 15){
+        if ((!getCell(1,3).equals(" "))
+            && (getCell(1,3).equals(getCell(2,2)))
+            && (getCell(2,2).equals(getCell(3,1)))){
             return true;
         }
         return false;
@@ -204,7 +157,7 @@ public class ScrabbleGame extends boardgame.BoardGame implements boardgame.Savea
     private boolean tieGame(){
         for (int down=1; down<=3; down++){
             for (int across=1; across<=3; across++){
-                if (getCell(across, down) == " "){
+                if (!getCell(across, down).equals(" ")){
                     return false;
                 }
             }
@@ -214,13 +167,12 @@ public class ScrabbleGame extends boardgame.BoardGame implements boardgame.Savea
 
     /*---------------------------------------------------------------------
      * isDone method and helpers
-     --------------------------------------------------------------------*/      
+     --------------------------------------------------------------------*/    
     /** Checks if game is done
     * @returns true if winner is not -1, false otherwise
-    */  
+    */      
     @Override
     public boolean isDone(){
-
         if (getWinner() != -1){
             return true;
         }
@@ -229,7 +181,7 @@ public class ScrabbleGame extends boardgame.BoardGame implements boardgame.Savea
 
     /*---------------------------------------------------------------------
      * newGame method and helpers
-     --------------------------------------------------------------------*/
+     --------------------------------------------------------------------*/ 
     /**
      * Resets the game grid, current player, and winner
     */
@@ -258,7 +210,7 @@ public class ScrabbleGame extends boardgame.BoardGame implements boardgame.Savea
      */ 
     @Override
     public String getStringToSave(){
-        ScrabbleGrid myGrid = (ScrabbleGrid)getGrid();
+        TictactoeGrid myGrid = (TictactoeGrid)getGrid();
         return myGrid.parseBoardIntoString(playerIntToChar((getCurrPlayer()+1)%2));
     }
 
@@ -268,9 +220,16 @@ public class ScrabbleGame extends boardgame.BoardGame implements boardgame.Savea
      */ 
     @Override
     public void loadSavedString(String saved){
+        
+        //here there should be code to parse the saved string into a board.
+        //I would probably write a method in my KakuroBoard class that did the parsing
+        // and just pass it the string/
+
+        /* must cast it to get a reference that can use Kakuro grid
+        methods*/
         char playerChar;
 
-        ScrabbleGrid myGrid = (ScrabbleGrid)getGrid();
+        TictactoeGrid myGrid = (TictactoeGrid)getGrid();
 
         playerChar = myGrid.parseStringIntoBoard(saved);
         // set current player to be opposite of most recent turn
@@ -278,7 +237,7 @@ public class ScrabbleGame extends boardgame.BoardGame implements boardgame.Savea
     }
 
     private int playerCharToInt(char playerChar){
-        if (playerChar == 'O'){
+        if (playerChar == 'X'){
             return 1;
         }
         return 2;
@@ -286,17 +245,13 @@ public class ScrabbleGame extends boardgame.BoardGame implements boardgame.Savea
 
     private char playerIntToChar(int playerInt){
         if (playerInt == 1){
-            return 'O';
+            return 'X';
         }
-        return 'E';
+        return 'O';
     }
 
-    /**
-     * Checks if game grid is empty
-     * @return true if grid is empty, false otherwise
-     */
     public boolean isBoardEmpty(){
-        return ((ScrabbleGrid)getGrid()).isEmpty();
+        return ((TictactoeGrid)getGrid()).isEmpty();
     }
 
 }
