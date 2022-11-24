@@ -52,7 +52,7 @@ or
 java -cp build/classes/java/main/ game.GameUI
 ```
 * Running the command line program
-
+```
 java -cp build/classes/java/main/ game.TextUI
 ```
 
