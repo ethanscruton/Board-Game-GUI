@@ -188,8 +188,12 @@ public abstract class BoardGameView extends JPanel{
      * Increments games played for player1 and player2
      */
     public void incrementPlayerTie(){
-        player1.incrementGamesPlayed();
-        player2.incrementGamesPlayed();
+        if (player1 != null){
+            player1.incrementGamesPlayed();
+        }
+        if (player2 != null){
+            player2.incrementGamesPlayed();
+        }
     }
 
     /**

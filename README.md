@@ -52,13 +52,26 @@ or
 java -cp build/classes/java/main/ game.GameUI
 ```
 * Running the command line program
-```
+
 java -cp build/classes/java/main/ game.TextUI
 ```
+
+## Player Save File Format
+```
+W
+L
+G
+
+```
+Where W is an integer representing wins, L is an integer representing losses, 
+and G is an integer representing games played.
 
 ## Limitations
 
 No player save/load option while playing Tic Tac Toe/Number Scrabble, only when starting/exiting a game.
+
+User must input their symbol for Tic Tac Toe. Gameplay would be more fluent if they only had to click
+the grid location they want to place their turn.
 
 ## Author Information
 
@@ -67,17 +80,17 @@ escruton@uoguelph.ca
 
 ## Development History
 * 1.0
-    * A2 resubmission. Fixed various bugs
+    * A3 submission version
 * 0.6
-    * Removing toString tests
+    * Creating TextUI class
 * 0.5
-    * Adding toString method for each Class
+    * Working full GUI suite
 * 0.4
-    * Adding test cases
+    * Creating abstract BoardGameView class
 * 0.3
-    * Submission version 1
+    * ScrabbleGame working (with GUI)
 * 0.2
-    * Initial working version
+    * ScrabbleGame working (no GUI)
 * 0.1
     * Initial Release
 
