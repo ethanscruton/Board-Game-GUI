@@ -43,8 +43,8 @@ public abstract class BoardGameView extends JPanel{
         super(); 
 
         // load player data
-        loadPlayer(1);
-        loadPlayer(2);
+        selectPlayer(1);
+        selectPlayer(2);
 
         // set root and controller
         root = gameFrame;
@@ -193,21 +193,32 @@ public abstract class BoardGameView extends JPanel{
     }
 
     /**
-     * Asks user if they want to load playerNum. If yes, load data for player playerNum from file
-     * @param playerNum to load
+     * Asks user if they want to create a new player, load an existing player, or play as guest
+     * @param playerNum to select
      */
-    protected void loadPlayer(int playerNum){
-        JOptionPane loadOption = new JOptionPane();
+    protected void selectPlayer(int playerNum){
+        String[] options = {"New", "Load", "Guest"};
         int selection;
-        selection = loadOption.showConfirmDialog(null,
-        String.format("Load player %d?", playerNum), "Load Player", JOptionPane.YES_NO_OPTION);
+        selection = JOptionPane.showOptionDialog(null,
+        String.format("Choose Player %d Option", playerNum), "Player Select",
+            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
-        if (selection == JOptionPane.YES_OPTION){
-            choosePlayerLoad(playerNum);
+        if (selection == 0){
+            createPlayer(playerNum);
+        } else if (selection == 1){
+            loadPlayer(playerNum);
         }
     }
 
-    private void choosePlayerLoad(int playerNum){
+    private void createPlayer(int playerNum){
+        if (playerNum == 1){
+            setPlayer1(new Player());
+        } else{
+            setPlayer2(new Player());
+        }
+    }
+
+    private void loadPlayer(int playerNum){
         File playerFolder = new File("./assets/players");
         JFileChooser fc = new JFileChooser(playerFolder);
         Path playerPath;
@@ -225,11 +236,11 @@ public abstract class BoardGameView extends JPanel{
             } catch (IOException ex){
                 JOptionPane.showMessageDialog(null, ex.getMessage(),
                                         "Invalid Scrabble File", JOptionPane.ERROR_MESSAGE);
-                loadPlayer(playerNum);
+                selectPlayer(playerNum);
             } catch (RuntimeException rex){
                 JOptionPane.showMessageDialog(null, rex.getMessage(),
                                         "Invalid Scrabble File", JOptionPane.ERROR_MESSAGE);
-                loadPlayer(playerNum);
+                selectPlayer(playerNum);
             }
         }
     }
@@ -239,7 +250,6 @@ public abstract class BoardGameView extends JPanel{
      * @param playerNum
      */
     protected void savePlayer(int playerNum){
-        JOptionPane saveOption = new JOptionPane();
         int selection;
         Player currPlayer;
         if (playerNum == 1){
@@ -248,7 +258,7 @@ public abstract class BoardGameView extends JPanel{
             currPlayer = getPlayer2();
         }
         if (currPlayer != null){
-            selection = saveOption.showConfirmDialog(null,
+            selection = JOptionPane.showConfirmDialog(null,
             String.format("Save player %d?", playerNum), "Load Player", JOptionPane.YES_NO_OPTION);
             
             if (selection == JOptionPane.YES_OPTION){
@@ -338,10 +348,9 @@ public abstract class BoardGameView extends JPanel{
 
     private void checkGameState(){
         int selection= 0;
-        JOptionPane gameOver = new JOptionPane();
         if(game.isDone()){
             incrementPlayerData();
-            selection = gameOver.showConfirmDialog(null,
+            selection = JOptionPane.showConfirmDialog(null,
             gameOverMessage(), "Play Again?", JOptionPane.YES_NO_OPTION);
             if(selection == JOptionPane.NO_OPTION){
                 exitGame();

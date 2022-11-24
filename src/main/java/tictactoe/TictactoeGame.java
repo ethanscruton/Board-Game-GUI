@@ -66,7 +66,7 @@ public class TictactoeGame extends boardgame.BoardGame implements boardgame.Save
      */
     @Override
     public boolean takeTurn(int across, int down, String input){
-        if (isValidStringInput(input)){
+        if (isValidStringInput(across, down, input)){
             setValue(across,down,input);
             checkForWinner();
             setCurrPlayer((getCurrPlayer() % 2) + 1);
@@ -75,13 +75,15 @@ public class TictactoeGame extends boardgame.BoardGame implements boardgame.Save
         return false;
     }
 
-    private boolean isValidStringInput(String input){
+    private boolean isValidStringInput(int across, int down, String input){
         if (input.length() != 1){
             throw new RuntimeException("More than one character input");
         } else if ((getCurrPlayer() == 1) && (!input.equals("X"))){
             throw new RuntimeException("X not input");
         } else if ((getCurrPlayer() == 2) && (!input.equals("O"))){
             throw new RuntimeException("O not input");
+        } else if (getCell(across,down) != " "){
+            throw new RuntimeException("Position already in use");
         }
         return true;
     }
@@ -97,7 +99,15 @@ public class TictactoeGame extends boardgame.BoardGame implements boardgame.Save
      */    
     @Override
     public boolean takeTurn(int across, int down, int input){
-        return false;
+        if (input == 1){
+            takeTurn(across, down, "X");
+            return true;
+        } else if (input == 2){
+            takeTurn(across, down, "O");
+            return true;
+        } else{
+            throw new RuntimeException("Only 1 and 2 are acceptable integers");
+        }
     }
 
     private void checkForWinner(){
@@ -211,7 +221,7 @@ public class TictactoeGame extends boardgame.BoardGame implements boardgame.Save
     @Override
     public String getStringToSave(){
         TictactoeGrid myGrid = (TictactoeGrid)getGrid();
-        return myGrid.parseBoardIntoString(playerIntToChar((getCurrPlayer()+1)%2));
+        return myGrid.parseBoardIntoString(playerIntToChar((getCurrPlayer()%2)+1));
     }
 
     /** 
@@ -233,7 +243,7 @@ public class TictactoeGame extends boardgame.BoardGame implements boardgame.Save
 
         playerChar = myGrid.parseStringIntoBoard(saved);
         // set current player to be opposite of most recent turn
-        setCurrPlayer((playerCharToInt(playerChar) + 1) % 2);
+        setCurrPlayer((playerCharToInt(playerChar) % 2) + 1);
     }
 
     private int playerCharToInt(char playerChar){

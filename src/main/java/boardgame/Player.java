@@ -9,6 +9,12 @@ public class Player implements Saveable {
     private int losses;
     private int gamesPlayed;
 
+    public Player(){
+        wins = 0;
+        losses = 0;
+        gamesPlayed = 0;
+    }
+
     public int getWins(){
         return wins;
     }

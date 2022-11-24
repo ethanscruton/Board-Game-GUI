@@ -8,6 +8,29 @@ public class TictactoeGrid extends boardgame.Grid{
         super(3,3);
     }
 
+    /**
+     * Returns nice string representation of grid
+     */
+    @Override
+    public String getStringGrid(){
+        Iterator<String> iter = iterator();
+        String strGrid = "";
+        String currCell;
+
+        for (int down = 1; down <= 3; down++){
+            for (int across = 1; across <= 3; across++){
+                currCell = iter.next();
+                if (currCell == " "){
+                    strGrid += ((down-1)*3 + (across)) + " ";
+                } else{
+                    strGrid += currCell + " ";
+                }
+            }
+            strGrid += "\n";
+        }
+        return strGrid;
+    }
+
     /** 
      * Check if grid is empty
      * @return true if grid is empty, false otherwise
